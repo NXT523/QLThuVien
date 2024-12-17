@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block title %}Quản Lý Sách - Hệ Thống Quản Lý Thư Viện{% endblock %}
+{% block content %}
+
+<div class="main-content-quanlysach">
+    <div class="header-quanlysach">
+        Quản lý sách
+    </div>
+
+    <div class="category-buttons-quanlysach">
+        <button class="category-button-quanlysach button-sach1" onclick="window.location.href='/sach'">SÁCH</button>
+        <button class="category-button-quanlysach button-loaisach" onclick="window.location.href='/loaisach'">LOẠI SÁCH</button>
+        <button class="category-button-quanlysach button-tacgia" onclick="window.location.href='/tacgia'">TÁC GIẢ</button>
+        <button class="category-button-quanlysach button-nxb" onclick="window.location.href='/nhaxuatban'">NXB</button>
+    </div>
+
+    <div class="search-section-quanlysach">
+        <h3>Tìm Kiếm</h3>
+        <div class="search-options-quanlysach">
+            <label><input type="radio" name="search" checked value="tenSach"> Tên Sách</label>
+            <label><input type="radio" name="search" value="loaiSach"> Loại Sách</label>
+            <label><input type="radio" name="search" value="nhaXuatBan"> Nhà Xuất Bản</label>
+            <label><input type="radio" name="search" value="tacGia"> Tác Giả</label>
+        </div>
+        <input type="text" class="search-box" id="tim-kiem" onkeyup="searchFunction()"
+            placeholder="Nhập từ khóa tìm kiếm...">
+    </div>
+
+    <div class="listhienthi-sach">
+        <h2>Danh Sách Sách</h2>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Mã sách</th>
+                    <th>Tên sách</th>
+                    <th>Tên loại sách</th>
+                    <th>Nhà xuất bản</th>
+                    <th>Tác giả</th>
+                    <th>Số trang</th>
+                    <th>Giá bán</th>
+                    <th>Số lượng</th>
+                    <th>Ảnh</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for qlsach in quanlysachs %}
+                <tr>
+                    <td>{{ qlsach[0] }}</td>
+                    <td>{{ qlsach[1] }}</td>
+                    <td>{{ qlsach[2] }}</td>
+                    <td>{{ qlsach[3] }}</td>
+                    <td>{{ qlsach[4] }}</td>
+                    <td>{{ qlsach[5] }}</td>
+                    <td>{{ "{:,.0f}".format(qlsach[6]) }} VND</td>
+                    <td>{{ qlsach[7] }}</td>
+                    <td><img src="{{ url_for('duongdan_picture', filename=qlsach[8]) }}" alt="{{ qlsach[8] }}"
+                            width="100" height="140"></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    function searchFunction() {
+        var input = document.getElementById("tim-kiem");
+        var filter = input.value.toLowerCase();
+        var searchType = document.querySelector('input[name="search"]:checked').value;
+        var table = document.querySelector(".data-table tbody");
+        var rows = table.getElementsByTagName("tr");
+
+        const columnIndexes = {
+            'tenSach': 1,
+            'loaiSach': 2,
+            'nhaXuatBan': 3,
+            'tacGia': 4
+        };
+
+        var columnIndex = columnIndexes[searchType];
+
+        for (var i = 0; i < rows.length; i++) {
+            var cell = rows[i].getElementsByTagName("td")[columnIndex];
+            if (cell) {
+                var text = cell.textContent || cell.innerText;
+                if (text.toLowerCase().indexOf(filter) > -1) {
+                    rows[i].style.display = "";
+                } else {
+                    rows[i].style.display = "none";
+                }
+            }
+        }
+    }
+    document.querySelectorAll('input[name="search"]').forEach(radio => {
+        radio.addEventListener('change', searchFunction);
+    });
+</script>
+{% endblock %}

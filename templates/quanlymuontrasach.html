@@ -1,0 +1,260 @@
+{% extends "base.html" %}
+{% block title %}Quản Lý Sách - Hệ Thống Quản Lý Thư Viện{% endblock %}
+{% block content %}
+
+<div class="content-muontrasach">
+    <div class="header-muontrasach">Mượn Trả Sách</div>
+</div>
+
+<div class="row info-section">
+    <div class="col-md-5 sidebar-muontrasach">
+        <div class="student info-khung-muontrasach1">
+            <h3>Thông Tin Sinh Viên</h3>
+            <div class="info-group">
+                <label for="maSV">Mã SV:</label>
+                <input type="text" id="maSV" disabled style="background-color: rgb(168, 167, 167);">
+            </div>
+            <div class="info-group">
+                <label for="tenSV">Tên SV:</label>
+                <input type="text" id="tenSV" disabled style="background-color: rgb(168, 167, 167);">
+            </div>
+            <hr>
+            <h3>Thông Tin Sách</h3>
+            <div class="inline-fields info-group">
+                <div>
+                    <label for="maSach">Mã Sách:</label>
+                    <input type="text" id="maSach" disabled style="background-color: rgb(168, 167, 167);">
+                </div>
+                <div>
+                    <label for="slCon">Số Lượng còn lại:</label>
+                    <input type="text" id="soluongInput" disabled style="background-color: rgb(168, 167, 167);">
+                </div>
+            </div>
+            <div class="info-group">
+                <label for="tenSachInput">Tên Sách:</label>
+                <input type="text" id="tenSachInput" disabled style="background-color: rgb(168, 167, 167);">
+            </div>
+            <div class="info-group">
+                <label for="tenTG">Tên TG:</label>
+                <input type="text" id="tenTacGiaInput" disabled style="background-color: rgb(168, 167, 167);">
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-7 sidebar-muontrasach3">
+        <div class="loan info-khung-muontrasach2">
+            <h3>Phiếu Mượn</h3>
+            <form method="POST" action="{{ url_for('quanlymuontrasach.them_muonsach') }}">
+                <div class="info-group">
+                    <label for="maPM">Mã Phiếu Mượn:</label>
+                    <input type="text" id="maPM" placeholder="Mã phiếu mượn sẽ tự tăng không cần nhập" readonly>
+                </div>
+                <div class="info-group">
+                    <label for="maSinhVien">Mã Sinh Viên:</label>
+                    <select id="maSinhVien" name="maSinhVien" required>
+                        <option value="" disabled selected>-- Chọn Mã Sinh Viên --</option>
+                        {% for sinhvien in quanlysinhviens %}
+                        <option value="{{ sinhvien[0] }}" data-ten="{{ sinhvien[1] }}">
+                            {{ sinhvien[0] }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="info-group">
+                    <label for="tenSach">Tên Sách:</label>
+                    <select id="tenSach" name="tenSach" required>
+                        <option value="" disabled selected>-- Chọn tên sách --</option>
+                        {% for sach in quanlysachs %}
+                        <option value="{{ sach[0] }}" data-tensach="{{ sach[1] }}" data-tentacgia="{{ sach[4] }}"
+                            data-soluong="{{ sach[7] }}">
+                            {{ sach[1] }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="info-group">
+                    <label for="ngayMuon">Ngày Mượn:</label>
+                    <input type="text" id="ngayMuon" class="date1" readonly name="ngayMuon"
+                        style="background-color: rgb(168, 167, 167);">
+                </div>
+                <div class="info-group">
+                    <label for="ngayTra">Ngày Trả:</label>
+                    <input type="text" id="ngayTra" class="date1" name="ngayTra">
+                </div>
+                <div class="info-group">
+                    <label for="ghiChu">Ghi Chú:</label>
+                    <input type="text" id="ghiChu" name="ghiChu">
+                </div>
+                <div class="button-muontrasach1">
+                    <button class="b1" type="submit"
+                        onclick="return confirm('Bạn có chắc chắn muốn mượn sách?');">Mượn
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="flash-messages">
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+    </div>
+</div>
+
+<div class="search-bar-container-muontra">
+    <label>
+        <h3>Tìm kiếm</h3>
+    </label>
+    <input type="text" class="search-input-muontra" placeholder="Nhập từ khóa tìm kiếm...">
+    <div class="search-options">
+        <label>
+            <input type="radio" name="search-option-muontra" value="maSinhVien" checked> Mã Sinh Viên
+        </label>
+        <label>
+            <input type="radio" name="search-option-muontra" value="tenSinhVien"> Tên Sinh Viên
+        </label>
+    </div>
+</div>
+<table class="data-table-muontrasach">
+    <thead>
+        <tr>
+            <th>Mã Phiếu Mượn</th>
+            <th>Mã SV</th>
+            <th>Tên SV</th>
+            <th>Mã Sách</th>
+            <th>Tên Sách</th>
+            <th>Ngày Mượn</th>
+            <th>Ngày Trả</th>
+            <th>Ghi Chú</th>
+            <th>Trả sách</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in muontrasachs %}
+        <tr>
+            <td>{{ item[0] }}</td>
+            <td>{{ item[1] }}</td>
+            <td>{{ item[2] }}</td>
+            <td>{{ item[3] }}</td>
+            <td>{{ item[4] }}</td>
+            <td>{{ item[5] }}</td>
+            <td>{{ item[6] }}</td>
+            <td>{{ item[7] }}</td>
+            <td class="col-chuc-nang-trasach">
+                <form action="{{ url_for('quanlymuontrasach.gia_han_sach', maPhieuMuon=item[0]) }}" method="POST"
+                    style="display:inline;">
+                    <input type="text" name="ngayTraMoi" class="date" placeholder="DD/MM/YYYY" required>
+                    <button type="submit" class="btn-giahan">Gia Hạn</button>
+                </form>
+
+                <form action="{{ url_for('quanlymuontrasach.tra_sach', maPhieuMuon=item[0]) }}" method="POST"
+                    style="display:inline;">
+                    <button type="submit" class="btn-trasach"
+                        onclick="return confirm('Bạn có chắc chắn muốn trả sách?');">
+                        Trả Sách
+                    </button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+</div>
+<script>
+    const maSinhVienSelect = document.getElementById('maSinhVien');
+    const maSVInput = document.getElementById('maSV');
+    const tenSVInput = document.getElementById('tenSV');
+
+    maSinhVienSelect.addEventListener('change', function () {
+        const selectedOption = maSinhVienSelect.options[maSinhVienSelect.selectedIndex];
+        const maSV = selectedOption.value;
+        const tenSV = selectedOption.getAttribute('data-ten');
+        maSVInput.value = maSV;
+        tenSVInput.value = tenSV;
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+        const tenSachSelect = document.getElementById('tenSach');
+        const maSachInput = document.getElementById('maSach');
+        const tenSachInput = document.getElementById('tenSachInput');
+        const tenTacGiaInput = document.getElementById('tenTacGiaInput');
+        const soluongInput = document.getElementById('soluongInput');
+
+        tenSachSelect.addEventListener('change', function () {
+            const selectedOption = tenSachSelect.options[tenSachSelect.selectedIndex];
+            const maSach = selectedOption.value;
+            const tenSach = selectedOption.getAttribute('data-tensach');
+            const tenTacGia = selectedOption.getAttribute('data-tentacgia');
+            const soLuong = selectedOption.getAttribute('data-soluong');
+
+            maSachInput.value = maSach;
+            tenSachInput.value = tenSach;
+            tenTacGiaInput.value = tenTacGia;
+            soluongInput.value = soLuong;
+        });
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+        const ngayMuonInput = document.getElementById('ngayMuon');
+        const ngayTraInput = document.getElementById('ngayTra');
+
+        function formatDate(date) {
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            return `${day}/${month}/${year}`;
+        }
+
+        const today = new Date();
+        ngayMuonInput.value = formatDate(today);
+
+        const returnDate = new Date();
+        returnDate.setDate(today.getDate() + 1);
+        ngayTraInput.value = formatDate(returnDate);
+    });
+    function searchFunction() {
+        var input = document.querySelector('.search-input-muontra');
+        var filter = input.value.toLowerCase();
+
+        var searchType = document.querySelector('input[name="search-option-muontra"]:checked').value;
+
+        var table = document.querySelector(".data-table-muontrasach tbody");
+        var rows = table.getElementsByTagName("tr");
+
+        const columnIndexes = {
+            'maSinhVien': 1, 
+            'tenSinhVien': 2 
+        };
+
+        var columnIndex = columnIndexes[searchType];
+
+        for (var i = 0; i < rows.length; i++) {
+            var cell = rows[i].getElementsByTagName("td")[columnIndex];
+            if (cell) {
+                var text = cell.textContent || cell.innerText;
+                if (text.toLowerCase().indexOf(filter) > -1) {
+                    rows[i].style.display = ""; 
+                } else {
+                    rows[i].style.display = "none";
+                }
+            }
+        }
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+        var searchInput = document.querySelector('.search-input-muontra');
+        if (searchInput) {
+            searchInput.addEventListener('keyup', searchFunction);
+        }
+
+        document.querySelectorAll('input[name="search-option-muontra"]').forEach(radio => {
+            radio.addEventListener('change', searchFunction);
+        });
+    });
+</script>
+{% endblock %}

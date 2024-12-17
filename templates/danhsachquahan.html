@@ -1,0 +1,34 @@
+{% extends "baocaothongke.html" %}
+{% block danhsach %}
+<h3>Danh Sách Sách Quá Hạn</h3>
+<div class="total" style="margin-right: 30px;">Tổng: {{ danhsachquahans|length }} Sách</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>MaPhieuMuon</th>
+            <th>MaSV</th>
+            <th>TenSV</th>
+            <th>SoDienThoai</th>
+            <th>TenSach</th>
+            <th>NgayMuon</th>
+            <th>NgayTra</th>
+            <th>GhiChu</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in danhsachquahans %}
+        <tr>
+            <td>{{ item[0] }}</td>
+            <td>{{ item[1] }}</td>
+            <td>{{ item[2] }}</td>
+            <td>{{ item[3] }}</td>
+            <td>{{ item[4] }}</td>
+            <td>{{ item[5] }}</td>
+            <td>{{ item[6] }}</td>
+            <td>{{ item[7] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

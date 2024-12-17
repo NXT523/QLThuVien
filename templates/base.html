@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Hệ Thống Quản Lý Thư Viện{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='trangchu.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='dangnhap.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='quanlysach.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='quanlysinhvien.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='quanlymuontrasach.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='quanlynhanvien.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='baocaothongke.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='loaisach.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='tacgia.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='nhaxuatban.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='gioithieu.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='sach.css') }}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2 sidebar-main">
+                <nav>
+                    <ul>
+                        <li><a href="{{ url_for('home') }}"><i class="fas fa-home"></i>Trang Chủ</a></li>
+                        <li><a href="{{ url_for('quanlysach.get_quanlysach') }}"><i class="fas fa-book"></i>Quản Lý
+                                Sách</a></li>
+                        <li><a href="{{ url_for('quanlysinhvien.get_quanlysinhvien') }}"><i
+                                    class="fas fa-user-graduate"></i>Quản Lý Sinh Viên</a></li>
+                        <li><a href="{{ url_for('quanlymuontrasach.get_quanlymuontrasach') }}"><i
+                                    class="fas fa-book-reader"></i>Mượn Trả Sách</a></li>
+
+                        {% if session.logged_in and session.role == 'Admin' %}
+                        <li> <a href="{{ url_for('quanlynhanvien.get_quanlynhanvien') }}"><i
+                                    class="fas fa-users"></i>Quản lý nhân viên</a></li>
+                        {% endif %}
+
+                        {% if session.logged_in and session.role == 'Admin' %}
+
+                        <li><a href="{{ url_for('quanlybaocaothongke.get_danhsachdangmuon') }}"><i
+                                    class="fas fa-chart-line"></i>Báo Cáo Thống Kê</a></li>
+                        {% endif %}
+
+                        <li><a href="{{ url_for('gioithieu') }}"><i class="fas fa-info-circle"></i>Giới thiệu</a></li>
+                        <nav>
+                            <li><a href="{{ url_for('quanlynhanvien.logout') }}"
+                                    onclick="return confirm('Bạn có chắc chắn muốn đăng xuất');">Đăng xuất</a></li>
+                        </nav>
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="col-md-10 p-0">
+                <div class="main-content-body">
+                    {% block content %}
+                    
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+<footer>
+    <p>@ 2024 - Đại Học Công nghệ Đông Á</p>
+</footer>
+</html>

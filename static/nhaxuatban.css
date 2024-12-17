@@ -1,0 +1,167 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  margin: 0;
+  padding: 0;
+}
+
+.header {
+  background-color: #008080;
+  color: white;
+  text-align: center;
+  padding: 20px 0;
+  font-size: 24px;
+}
+
+.container-nhaxuatban {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px;
+}
+
+.form-container-nhaxuatban {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-right: 20px;
+}
+
+.form-container-nhaxuatban input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.form-container-nhaxuatban button {
+  padding: 10px 20px;
+  margin: 5px;
+  border: none;
+  border-radius: 5px;
+  background-color: rgb(4, 143, 236);
+  border: 2px solid #fa9f01;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  width: 90px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.form-container-nhaxuatban button:hover {
+  background-color: #f9f515;
+  color: rgb(0, 0, 0);
+  transform: translateY(-5px);
+}
+
+.table-container {
+  background-color: white;
+  padding: 8px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.table-container input[type="text"] {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.table-container tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.table-container tr:hover {
+  background-color: #e0f7fa;
+  transition: background-color 0.3s;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+th,
+td {
+  padding: 10px;
+  text-align: left;
+}
+
+th {
+  background-color: #008080;
+  color: white;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.buttons-nhaxuatban {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 30px;
+}
+
+.buttons-nhaxuatban button {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: #efebeb;
+  background-color: rgb(4, 143, 243);
+  border: 2px solid #fa9f01;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.button-nhaxuatban button:hover {
+  background-color: #f9f515;
+  color: rgb(0, 0, 0);
+}
+
+.btn-delete-nhaxuatban {
+  background-color: #de4242;
+  color: white;
+  border: none;
+  padding: 7px 10px 7px 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-delete-nhaxuatban:hover {
+  background-color: #a7fa01;
+}
+
+.col-chuc-nang-xoa-nhaxuatban {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.col-ma-loai-nhaxuatban {
+  width: 10%;
+  text-align: center;
+}
+
+.col-ten-loai-sach-nhaxuatban {
+  width: 20%;
+  text-align: center;
+}
+
+.col-ghi-chu-nhaxuatban {
+  width: 30%;
+  text-align: center;
+}
+
+.col-chuc-nang-nhaxuatban {
+  width: 10%;
+  text-align: center;
+}

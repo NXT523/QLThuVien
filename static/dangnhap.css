@@ -1,0 +1,63 @@
+.khung {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(to right, #6a11cb, #2575fc);
+    font-family: Arial, sans-serif;
+    color: #333;
+    margin: 0;
+}
+
+.container-dangnhap {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    width: 300px;
+    text-align: center;
+}
+
+h2 {
+    margin-bottom: 1.5rem;
+    color: #2575fc;
+}
+
+input[type="tel"],
+input[type="text"],
+input[type="password"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 14px;
+    outline: none;
+}
+
+input[type="tel"]:focus,
+input[type="text"]:focus,
+input[type="password"]:focus {
+    border-color: #2575fc;
+    box-shadow: 0 0 5px rgba(37, 117, 252, 0.2);
+}
+
+.button-dangnhap {
+    background-color: #de4242;
+    color: white;
+    border: none;
+    padding: 7px 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin: 5px 0;
+    display: inline-block;
+    text-decoration: none;
+    min-width: 100px;
+}
+
+.button-dangnhap:hover {
+    background-color: #a7fa01;
+}

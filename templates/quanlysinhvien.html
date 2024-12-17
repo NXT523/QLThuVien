@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% block title %}Quản Lý Sách - Hệ Thống Quản Lý Thư Viện{% endblock %}
+{% block content %}
+
+<div class="main-content-sinhvien">
+    <div class="header-sinhvien">
+        Quản Lý Sinh Viên - Độc Giả
+    </div>
+    <div class="search-section-sinhvien">
+        <h3>Tìm Kiếm Sinh Viên</h3>
+        <div class="search-options-sinhvien">
+            <label><input type="radio" name="search-option" value="masv" checked> Mã Sinh Viên</label>
+            <label><input type="radio" name="search-option" value="tensv"> Tên Sinh Viên</label>
+        </div>
+        <div>
+            <input type="text" class="search-input-sinhvien" placeholder="Nhập từ khóa tìm kiếm...">
+        </div>
+    </div>
+    <div class="content-container-sinhvien">
+        <div class="row">
+            <div class="col-md-4 sidebar-quanlysinhvien">
+                <div class="form-section-sinhvien">
+                    <form method="POST">
+                        <div class="form-group-sinhvien">
+                            <label for="maSinhVien">Mã Sinh Viên</label>
+                            <input type="text" id="maSinhVien" name="maSinhVien">
+                        </div>
+                        <div class="form-group-sinhvien">
+                            <label for="tenSinhVien">Tên Sinh Viên</label>
+                            <input type="text" id="tenSinhVien" name="tenSinhVien">
+                        </div>
+                        <div class="form-group-sinhvien">
+                            <label for="nganhHoc">Ngành Học</label>
+                            <input type="text" id="nganhHoc" name="nganhHoc">
+                        </div>
+                        <div class="form-group-sinhvien">
+                            <label for="khoaHoc">Khóa Học</label>
+                            <input type="text" id="khoaHoc" name="khoaHoc">
+                        </div>
+                        <div class="form-group-sinhvien">
+                            <label for="soDienThoai">Số Điện Thoại</label>
+                            <input type="text" id="soDienThoai" name="soDienThoai">
+                        </div>
+                        <div>
+                            {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% if messages %}
+                            <div class="flash-messages">
+                                {% for category, message in messages %}
+                                <div class="alert alert-{{ category }}">{{ message }}</div>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                            {% endwith %}
+                        </div>
+                        <div class="button-group-sinhvien">
+                            <button type="submit"
+                                formaction="{{ url_for('quanlysinhvien.them_quanlysinhvien') }}">Thêm</button>
+                            <button type="submit"
+                                formaction="{{ url_for('quanlysinhvien.sua_quanlysinhvien') }}">Sửa</button>
+                            <button type="reset">Làm mới</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-8 sidebar-quanlysinhvien">
+                <div class="table-section-sinhvien">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Mã sinh viên</th>
+                                <th>Tên sinh viên</th>
+                                <th>Ngành học</th>
+                                <th>Khóa học</th>
+                                <th>Số điện thoại</th>
+                                <th class="col-chuc-nang-quanlysinhvien">Chức năng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for quanlysinhvien in quanlysinhviens %}
+                            <tr
+                                onclick="populateForm('{{ quanlysinhvien[0] }}', '{{ quanlysinhvien[1] }}', '{{ quanlysinhvien[2] }}', '{{ quanlysinhvien[3] }}', '{{ quanlysinhvien[4] }}')">
+                                <td>{{ quanlysinhvien[0] }}</td>
+                                <td>{{ quanlysinhvien[1] }}</td>
+                                <td>{{ quanlysinhvien[2] }}</td>
+                                <td>{{ quanlysinhvien[3] }}</td>
+                                <td>{{ quanlysinhvien[4] }}</td>
+                                <td class="col-chuc-nang-xoa-quanlysinhvien">
+                                    <form
+                                        action="{{ url_for('quanlysinhvien.xoa_quanlysinhvien', maSinhVien=quanlysinhvien[0]) }}"
+                                        method="POST" style="display:inline;">
+                                        <button type="submit" class="btn-delete-quanlysinhvien"
+                                            onclick="return confirm('Bạn có chắc chắn muốn xóa sinh vien này?');">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function populateForm(maSinhVien, tenSinhVien, nganhHoc, khoaHoc, soDienThoai) {
+        document.getElementById('maSinhVien').value = maSinhVien;
+        document.getElementById('tenSinhVien').value = tenSinhVien;
+        document.getElementById('nganhHoc').value = nganhHoc;
+        document.getElementById('khoaHoc').value = khoaHoc;
+        document.getElementById('soDienThoai').value = soDienThoai;
+    }
+    function searchFunction() {
+        var input = document.querySelector('.search-input-sinhvien');
+        var filter = input.value.toLowerCase();
+        var searchType = document.querySelector('input[name="search-option"]:checked').value;
+        var table = document.querySelector(".table-section-sinhvien tbody");
+        var rows = table.getElementsByTagName("tr");
+        const columnIndexes = {
+            'masv': 0, 
+            'tensv': 1   
+        };
+        var columnIndex = columnIndexes[searchType];
+
+        for (var i = 0; i < rows.length; i++) {
+            var cell = rows[i].getElementsByTagName("td")[columnIndex];
+            if (cell) {
+                var text = cell.textContent || cell.innerText;
+                if (text.toLowerCase().indexOf(filter) > -1) {
+                    rows[i].style.display = "";
+                } else {
+                    rows[i].style.display = "none";
+                }
+            }
+        }
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+        var searchInput = document.querySelector('.search-input-sinhvien');
+        if (searchInput) {
+            searchInput.addEventListener('keyup', searchFunction);
+        }
+        document.querySelectorAll('input[name="search-option"]').forEach(radio => {
+            radio.addEventListener('change', searchFunction);
+        });
+    });
+</script>
+{% endblock %}

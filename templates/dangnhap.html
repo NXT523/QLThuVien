@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="../static/dangnhap.css">
+</head>
+<body>
+    {% if session.logged_in %}
+        <nav>
+            {% if session.role == 'admin' %}
+                <a href="{{ url_for('quanlynhanvien.get_quanlynhanvien') }}" class="button-dangnhap">Quản lý nhân viên</a>
+            {% endif %}
+            <a href="{{ url_for('quanlynhanvien.logout') }}" class="button-dangnhap">Đăng xuất</a>
+        </nav>
+    {% else %}
+        <div class="khung">
+            <div class="container-dangnhap">
+                <h2>Login</h2>
+                <form method="POST" action="{{ url_for('quanlynhanvien.login') }}">
+                    {% if error %}
+                        <div class="error-message">{{ error }}</div>
+                    {% endif %}
+                    <input type="tel" name="phone" placeholder="Số điện thoại" required>
+                    <input type="password" name="password" placeholder="Mật khẩu" required>
+                    <button class="button-dangnhap" type="submit">Login</button>
+                </form>
+            </div>
+        </div>
+    {% endif %}
+</body>
+</html>

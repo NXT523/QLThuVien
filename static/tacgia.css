@@ -1,0 +1,129 @@
+.header {
+    background-color: #008080;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.container-tacgia {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    margin: 0 5px 0 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+}
+
+.form-section-tacgia,
+.table-section {
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.form-section-tacgia {
+    width: 35%;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.button-section-tacgia {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 30px;
+}
+
+.button-section-tacgia button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: rgb(4, 143, 236);
+    border: 2px solid #fa9f01;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    width: 90px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.button-section-tacgia button:hover {
+    background-color: #f9f515;
+    color: rgb(0, 0, 0);
+    transform: translateY(-5px);
+}
+
+.table-section {
+    width: 100%;
+}
+
+.table-section .search-group {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+}
+
+.cottacgia {
+    width: 100%;
+    margin-left: 10px;
+}
+
+.header-tacgia {
+    background-color: #2AA198;
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.btn-delete-tacgia {
+    background-color: #de4242;
+    color: white;
+    border: none;
+    padding: 7px 10px 7px 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-delete-tacgia:hover {
+    background-color: #a7fa01;
+}
+
+.col-ma-loai-tacgia {
+    width: 10%;
+    text-align: center;
+}
+
+.col-ten-loai-sach-tacgia {
+    width: 20%;
+    text-align: center;
+}
+
+.col-ghi-chu-tacgia {
+    width: 30%;
+    text-align: center;
+}
+
+.col-chuc-nang-tacgia {
+    width: 10%;
+    text-align: center;
+}
+
+.col-chuc-nang-xoa-tacgia {
+    text-align: center;
+    vertical-align: middle;
+}

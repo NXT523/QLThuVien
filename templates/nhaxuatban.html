@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% block title %}Quản Lý Sách - Hệ Thống Quản Lý Thư Viện{% endblock %}
+{% block content %}
+
+<div class="main-content">
+    <div class="header-loaisach">
+        NHÀ XUẤT BẢN
+    </div>
+    <div class="container-nhaxuatban">
+        <div class="row">
+            <div class="col-md-4 sidebar-quanlynhanvien">
+                <div class="form-container-nhaxuatban">
+                    <form method="POST">
+                        <label for="maNXB"><b>Mã Nhà XB</b></label>
+                        <input type="text" id="maNXB" name="maNXB">
+                        <label for="tenNXB"><b>Tên Nhà XB</b></label>
+                        <input type="text" id="tenNXB" name="tenNXB">
+                        <label for="ghiChu"><b>Ghi Chú</b></label>
+                        <input type="text" id="ghiChu" name="ghiChu">
+                        <div>
+                            {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% if messages %}
+                            <div class="flash-messages">
+                                {% for category, message in messages %}
+                                <div class="alert alert-{{ category }}">{{ message }}</div>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                            {% endwith %}
+                        </div>
+                        <div class="buttons-nhaxuatban">
+                            <button type="submit" formaction="{{ url_for('nhaxuatban.them_nxb') }}">Thêm</button>
+                            <button type="submit" formaction="{{ url_for('nhaxuatban.sua_nxb') }}">Sửa</button>
+                            <button type="reset">Làm mới</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-md-8 sidebar-quanlynhanvien">
+                <div class="table-container">
+                    <label for="tim-kiem">
+                        <h3>Tìm Kiếm</h3>
+                    </label>
+                    <input type="text" id="tim-kiem" onkeyup="searchFunction()"
+                        placeholder="Nhập mã hoặc tên NXB để tìm kiếm...">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="col-ma-loai-nhaxuatban">Mã Nhà Xuất Bản</th>
+                                <th class="col-ten-loai-sach-nhaxuatban">Tên Nhà Xuất Bản</th>
+                                <th class="col-ghi-chu-nhaxuatban">Ghi chú</th>
+                                <th class="col-chuc-nang-nhaxuatban">Chức năng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for nhaxuatban in nhaxuatbans %}
+                            <tr
+                                onclick="populateForm('{{ nhaxuatban[0] }}', '{{ nhaxuatban[1] }}', '{{ nhaxuatban[2] }}')">
+                                <td>{{ nhaxuatban[0] }}</td>
+                                <td>{{ nhaxuatban[1] }}</td>
+                                <td>{{ nhaxuatban[2] }}</td>
+                                <td class="col-chuc-nang-xoa-nhaxuatban">
+                                    <form action="{{ url_for('nhaxuatban.xoa_nxb', maNXB=nhaxuatban[0]) }}"
+                                        method="POST" style="display:inline;">
+                                        <button type="submit" class="btn-delete-nhaxuatban"
+                                            onclick="return confirm('Bạn có chắc chắn muốn xóa nha xuat ban này?');">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function populateForm(maNXB, tenNXB, ghiChu) {
+        document.getElementById('maNXB').value = maNXB;
+        document.getElementById('tenNXB').value = tenNXB;
+        document.getElementById('ghiChu').value = ghiChu;
+    }
+    function searchFunction() {
+        var input = document.getElementById("tim-kiem");
+        var filter = input.value.toLowerCase();
+        var table = document.querySelector("table tbody");
+        var rows = table.getElementsByTagName("tr");
+
+        for (var i = 0; i < rows.length; i++) {
+            var cells = rows[i].getElementsByTagName("td");
+            var match = false;
+
+            for (var j = 0; j < cells.length; j++) {
+                var cell = cells[j];
+                if (cell) {
+                    var text = cell.textContent || cell.innerText;
+                    if (text.toLowerCase().indexOf(filter) > -1) {
+                        match = true;
+                        break;
+                    }
+                }
+            }
+
+            if (match) {
+                rows[i].style.display = "";
+            } else {
+                rows[i].style.display = "none";
+            }
+        }
+    }
+</script>
+{% endblock %}

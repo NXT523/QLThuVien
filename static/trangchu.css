@@ -1,0 +1,16 @@
+.header-title-trangchu {
+    background-color: #2AA198;
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+    font-size: 26px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.content-trangchu img {
+    max-width: 100%;
+}
+

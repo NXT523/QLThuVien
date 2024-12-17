@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% block title %}Quản Lý Sách - Hệ Thống Quản Lý Thư Viện{% endblock %}
+{% block content %}
+
+<div class="main-content">
+    <div class="header-loaisach">
+        LOẠI SÁCH
+    </div>
+
+    <div class="container">
+        <div class="left-section">
+            <form method="POST">
+                <div>
+                    <div class="form-group">
+                        <label for="maLoai">Mã Loại</label>
+                        <input type="text" id="maLoai" name="maLoai">
+                    </div>
+                    <div class="form-group">
+                        <label for="loaiSach">Loại Sách</label>
+                        <input type="text" id="loaiSach" name="loaiSach">
+                    </div>
+                    <div class="form-group">
+                        <label for="ghiChu">Ghi Chú</label>
+                        <input type="text" id="ghiChu" name="ghiChu">
+                    </div>
+                    <div>
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                        <div class="flash-messages">
+                            {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">{{ message }}</div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        {% endwith %}
+                    </div>
+                </div>
+                <div class="buttons-section">
+                    <button type="submit" formaction="{{ url_for('loaisach.them_loaisach') }}">Thêm</button>
+                    <button type="submit" formaction="{{ url_for('loaisach.sua_loaisach') }}">Sửa</button>
+                    <button type="reset">Làm mới</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="right-section">
+            <div class="search-bar-loaisach">
+                <label>
+                    <h3>Tìm kiếm</h3>
+                </label>
+                <input type="text" id="search-loaisach" onkeyup="searchFunction()"
+                    placeholder="Nhập mã hoặc tên loại sách để tìm kiếm...">
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th class="col-ma-loai">Mã loại sách</th>
+                        <th class="col-ten-loai-sach">Tên loại</th>
+                        <th class="col-ghi-chu">Ghi chú</th>
+                        <th class="col-chuc-nang">Chức năng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for loaisach in loaisachs %}
+                    <tr onclick="populateForm('{{ loaisach[0] }}', '{{ loaisach[1] }}', '{{ loaisach[2] }}')">
+                        <td>{{ loaisach[0] }}</td>
+                        <td>{{ loaisach[1] }}</td>
+                        <td>{{ loaisach[2] }}</td>
+                        <td class="col-chuc-nang-xoa-loaisach">
+                            <form action="{{ url_for('loaisach.xoa_loaisach', maLoai=loaisach[0]) }}" method="POST"
+                                style="display:inline;">
+                                <button type="submit" class="btn-delete-loaisach"
+                                    onclick="return confirm('Bạn có chắc chắn muốn xóa loại sách này?');">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    function populateForm(maLoai, loaiSach, ghiChu) {
+        document.getElementById('maLoai').value = maLoai;
+        document.getElementById('loaiSach').value = loaiSach;
+        document.getElementById('ghiChu').value = ghiChu;
+    }
+    function searchFunction() {
+        var input = document.getElementById("search-loaisach");
+        var filter = input.value.toLowerCase();  
+        var table = document.querySelector("table tbody");  
+        var rows = table.getElementsByTagName("tr"); 
+
+        for (var i = 0; i < rows.length; i++) {
+            var cells = rows[i].getElementsByTagName("td"); 
+            var match = false; 
+
+            for (var j = 0; j < cells.length; j++) {
+                var cell = cells[j];
+                if (cell) {
+                    var text = cell.textContent || cell.innerText;  
+                    if (text.toLowerCase().indexOf(filter) > -1) {
+                        match = true;
+                        break;
+                    }
+                }
+            }
+
+            if (match) {
+                rows[i].style.display = "";
+            } else {
+                rows[i].style.display = "none"; 
+            }
+        }
+    }
+</script>
+
+{% endblock %}

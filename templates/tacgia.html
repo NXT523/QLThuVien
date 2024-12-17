@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% block title %}Quản Lý Sách - Hệ Thống Quản Lý Thư Viện{% endblock %}
+{% block content %}
+<div class="header-tacgia">
+    TÁC GIẢ
+</div>
+<div class="container-tacgia">
+    <div class="form-section-tacgia">
+        <form method="POST">
+            <div class="form-group">
+                <label for="maTacGia">Mã Tác Giả</label>
+                <input type="text" id="maTacGia" name="maTacGia">
+            </div>
+            <div class="form-group">
+                <label for="tenTacGia">Tên Tác Giả</label>
+                <input type="text" id="tenTacGia" name="tenTacGia">
+            </div>
+            <div class="form-group">
+                <label for="ghiChu">Ghi Chú</label>
+                <input type="text" id="ghiChu" name="ghiChu">
+            </div>
+            <div>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% endwith %}
+            </div>
+            <div class="button-section-tacgia">
+                <button type="submit" formaction="{{ url_for('tacgia.them_tacgia') }}">Thêm</button>
+                <button type="submit" formaction="{{ url_for('tacgia.sua_tacgia') }}">Sửa</button>
+                <button type="reset">Làm mới</button>
+            </div>
+        </form>
+    </div>
+    <div class="cottacgia">
+        <div class="search-group">
+            <label>
+                <h3>Tìm kiếm</h3>
+            </label>
+            <input type="text" id="search" onkeyup="searchFunction()" placeholder="Nhập mã hoặc tên tác giả...">
+        </div>
+        <table class="bangtacgia">
+            <thead>
+                <tr>
+                    <th class="col-ma-loai-tacgia">Mã Tác Giả</th>
+                    <th class="col-ten-loai-sach-tacgia">Tên Tác Giả</th>
+                    <th class="col-ghi-chu-tacgia">Ghi chú</th>
+                    <th class="col-chuc-nang-tacgia">Chức năng</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for tacgia in tacgias %}
+                <tr onclick="populateForm('{{ tacgia[0] }}', '{{ tacgia[1] }}', '{{ tacgia[2] }}')">
+                    <td>{{ tacgia[0] }}</td>
+                    <td>{{ tacgia[1] }}</td>
+                    <td>{{ tacgia[2] }}</td>
+                    <td class="col-chuc-nang-xoa-tacgia">
+                        <form action="{{ url_for('tacgia.xoa_tacgia', maTacGia=tacgia[0]) }}" method="POST"
+                            style="display:inline;">
+                            <button type="submit" class="btn-delete-tacgia"
+                                onclick="return confirm('Bạn có chắc chắn muốn xóa loại sách này?');">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+</div>
+<script>
+    function populateForm(maTacGia, tenTacGia, ghiChu) {
+        document.getElementById('maTacGia').value = maTacGia;
+        document.getElementById('tenTacGia').value = tenTacGia;
+        document.getElementById('ghiChu').value = ghiChu;
+    }
+    function searchFunction() {
+        var input = document.getElementById("search");
+        var filter = input.value.toLowerCase(); 
+        var table = document.querySelector(".bangtacgia tbody"); 
+        var rows = table.getElementsByTagName("tr"); 
+
+        for (var i = 0; i < rows.length; i++) {
+            var cells = rows[i].getElementsByTagName("td");
+            var match = false; 
+
+            for (var j = 0; j < cells.length; j++) {
+                var cell = cells[j];
+                if (cell) {
+                    var text = cell.textContent || cell.innerText;  
+                    if (text.toLowerCase().indexOf(filter) > -1) {
+                        match = true;
+                        break;
+                    }
+                }
+            }
+
+            if (match) {
+                rows[i].style.display = "";
+            } else {
+                rows[i].style.display = "none"; 
+            }
+        }
+    }
+</script>
+{% endblock %}

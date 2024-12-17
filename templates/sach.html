@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+{% block title %}Quản Lý Sách - Hệ Thống Quản Lý Thư Viện{% endblock %}
+{% block content %}
+
+<div class="main-content-sach">
+    <div class="header-sach">
+        SÁCH
+    </div>
+    <div class="container-sach">
+        <div class="form-container-sach">
+            <form method="POST">
+                <div class="row-sach">
+                    <div class="column-sach">
+                        <label for="maSach">Mã Sách</label>
+                        <input type="text" id="maSach" name="maSach">
+
+                        <label for="tenSach">Tên Sách</label>
+                        <input type="text" id="tenSach" name="tenSach">
+
+                        <label for="tacGia">Tác Giả</label>
+                        <select id="tacGia" name="tacGia" required>
+                            {% for tacgia in tacgias %}
+                            <option value="{{ tacgia[0] }}">{{ tacgia[1] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="column-sach">
+                        <label for="nhaXuatBan">Nhà Xuất Bản</label>
+                        <select id="nhaXuatBan" name="nhaXuatBan" required>
+                            {% for nhaxuatban in nhaxuatbans %}
+                            <option value="{{ nhaxuatban[0] }}">{{ nhaxuatban[1] }}</option>
+                            {% endfor %}
+                        </select>
+
+                        <label for="loaiSach">Loại Sách</label>
+                        <select id="loaiSach" name="loaiSach" required>
+                            {% for loaisach in loaisachs %}
+                            <option value="{{ loaisach[0] }}">{{ loaisach[1] }}</option>
+                            {% endfor %}
+                        </select>
+
+                        <label for="soTrang">Số trang</label>
+                        <input type="text" id="soTrang" name="soTrang">
+                    </div>
+
+                    <div class="column-sach">
+                        <label for="giaBan">Giá bán</label>
+                        <input type="text" id="giaBan" name="giaBan">
+
+                        <label for="soLuong">Số lượng</label>
+                        <input type="text" id="soLuong" name="soLuong">
+
+                        <label for="hinhAnh">Hình ảnh</label>
+                        <input type="text" id="hinhAnh" name="hinhAnh">
+                    </div>
+                </div>
+                <div>
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                    <div class="flash-messages">
+                        {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    {% endwith %}
+                </div>
+
+                <div class="button-container-sach">
+                    <button class="button-sach" formaction="{{ url_for('sach.them_sach') }}">Thêm</button>
+                    <button class="button-sach" formaction="{{ url_for('sach.sua_sach') }}">Sửa</button>
+                    <button class="button-sach" type="reset">Làm mới</button>
+                </div>
+            </form>
+        </div>
+        <div class="search-section-quanlysach">
+            <h3>Tìm Kiếm</h3>
+            <div class="search-options-quanlysach">
+                <label><input type="radio" name="search" checked value="tenSach"> Tên Sách</label>
+                <label><input type="radio" name="search" value="tacGia"> Tác Giả</label>
+                <label><input type="radio" name="search" value="nhaXuatBan"> Nhà Xuất Bản</label>
+                <label><input type="radio" name="search" value="loaiSach"> Mã Loại Sách</label>
+            </div>
+            <input type="text" class="search-box" id="tim-kiem" onkeyup="searchFunction()"
+                placeholder="Nhập từ khóa tìm kiếm...">
+        </div>
+        <div class="table-container-sach">
+            <table class="table-sach">
+                <thead>
+                    <tr>
+                        <th>Mã Sách</th>
+                        <th>Tên Sách</th>
+                        <th>Mã Tác Giả</th>
+                        <th>Mã Nhà Xuất Bản</th>
+                        <th>Mã Loại Sách</th>
+                        <th>Số Trang</th>
+                        <th>Giá Bán</th>
+                        <th>Số Lượng</th>
+                        <th>Hình Ảnh</th>
+                        <th class="col-chuc-nang-tacgia">Chức năng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for sach in sachs %}
+                    <tr
+                        onclick="populateForm('{{ sach[0] }}', '{{ sach[1] }}', '{{ sach[2] }}', '{{ sach[3] }}', '{{ sach[4] }}', '{{ sach[5] }}', '{{ sach[6] }}', '{{ sach[7] }}', '{{ sach[8] }}')">
+                        <td>{{ sach[0] }}</td>
+                        <td>{{ sach[1] }}</td>
+                        <td>{{ sach[2] }}</td>
+                        <td>{{ sach[3] }}</td>
+                        <td>{{ sach[4] }}</td>
+                        <td>{{ sach[5] }}</td>
+                        <td>{{ "{:,.0f}".format(sach[6]) }}</td>
+                        <td>{{ sach[7] }}</td>
+                        <td><img src="{{ url_for('duongdan_picture', filename=sach[8]) }}" alt="{{ sach[8] }}"
+                                width="100" height="140"></td>
+                        <td class="col-chuc-nang-xoa-sach">
+                            <form action="{{ url_for('sach.xoa_sach', maSach=sach[0]) }}" method="POST"
+                                style="display:inline;">
+                                <button type="submit" class="btn-delete-sach"
+                                    onclick="return confirm('Bạn có chắc chắn muốn loại sách này?');">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </form>
+                        </td>
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    function searchFunction() {
+        var input = document.getElementById("tim-kiem");
+        var filter = input.value.toLowerCase();
+        var searchType = document.querySelector('input[name="search"]:checked').value;
+        var table = document.querySelector(".table-sach tbody");
+        var rows = table.getElementsByTagName("tr");
+
+        const columnIndexes = {
+            'tenSach': 1,
+            'tacGia': 2,
+            'nhaXuatBan': 3,
+            'loaiSach': 4
+        };
+
+        var columnIndex = columnIndexes[searchType];
+
+        for (var i = 0; i < rows.length; i++) {
+            var cell = rows[i].getElementsByTagName("td")[columnIndex];
+            if (cell) {
+                var text = cell.textContent || cell.innerText;
+                if (filter === "" || text.toLowerCase().indexOf(filter) > -1) {
+                    rows[i].style.display = "";
+                } else {
+                    rows[i].style.display = "none";
+                }
+            }
+        }
+    }
+
+    document.querySelectorAll('input[name="search"]').forEach(radio => {
+        radio.addEventListener('change', searchFunction);
+    });
+    function populateForm(maSach, tenSach, tacGia, nhaXuatBan, loaiSach, soTrang, giaBan, soLuong, hinhAnh) {
+    document.getElementById('maSach').value = maSach;
+    document.getElementById('tenSach').value = tenSach;
+    document.getElementById('tacGia').value = tacGia;
+    document.getElementById('nhaXuatBan').value = nhaXuatBan;
+    document.getElementById('loaiSach').value = loaiSach;
+    document.getElementById('soTrang').value = soTrang;
+    document.getElementById('giaBan').value = parseInt(giaBan);
+    document.getElementById('soLuong').value = soLuong;
+    document.getElementById('hinhAnh').value = hinhAnh;
+}
+</script>
+{% endblock %}

@@ -1,0 +1,210 @@
+{% extends "base.html" %}
+{% block title %}Quản Lý Sách - Hệ Thống Quản Lý Thư Viện{% endblock %}
+{% block content %}
+
+<div class="main-content-quanlynhanvien">
+    <div class="header-quanlynhanvien">
+        Quản Lý Nhân Viên
+    </div>
+    <div class="content-quanlynhanvien">
+        <div class="row">
+            <div class="col-md-4 sidebar-quanlynhanvien">
+                <div class="form-section-quanlynhanvien">
+                    <h3>Thông tin</h3>
+                    <form method="POST">
+                        <div class="form-group">
+                            <label for="maNhanVien">Mã nhân viên</label>
+                            <input type="text" id="maNhanVien" name="maNhanVien">
+
+                            <label for="tenNhanVien">Tên nhân viên</label>
+                            <input type="text" id="tenNhanVien" name="tenNhanVien">
+
+                            <label for="soDienThoai">Số điện thoại</label>
+                            <input type="text" id="soDienThoai" name="soDienThoai">
+
+                            <label for="gioiTinh"> Giới tính</label>
+                            <select type="text" id="gioiTinh" name="gioiTinh">
+                                <option>Nam</option>
+                                <option>Nữ</option>
+                            </select>
+
+                            <label for="diaChi">Địa chỉ</label>
+                            <input type="text" id="diaChi" name="diaChi">
+
+                            <label for="matKhau">Mật khẩu</label>
+                            <input type="text" id="matKhau" name="matKhau">
+
+                            <label for="vaiTro"> Vai Trò</label>
+                            <select type="text" id="vaiTro" name="vaiTro">
+                                <option>NhanVien</option>
+                                <option>Admin</option>
+                            </select>
+                        </div>
+                        <div>
+                            {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% if messages %}
+                            <div class="flash-messages">
+                                {% for category, message in messages %}
+                                <div class="alert alert-{{ category }}">{{ message }}</div>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                            {% endwith %}
+                        </div>
+                        <div class="button-section-quanlynhanvien">
+                            <button type="submit"
+                                formaction="{{ url_for('quanlynhanvien.them_quanlynhanvien') }}">Thêm</button>
+                            <button type="submit"
+                                formaction="{{ url_for('quanlynhanvien.sua_quanlynhanvien') }}">Sửa</button>
+                            <button type="reset">Làm mới</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-8 sidebar-quanlynhanvien">
+                <div class="quanlynhanvien-timkiem">
+                    <label><h3>Tìm kiếm</h3></label>
+                    <input type="text" class="search-input-quanlynhanvien" placeholder="Nhập từ khóa tìm kiếm...">
+                    <div>
+                        <label><input type="radio" name="search-option" value="maNhanVien" checked> Mã Nhân Viên</label>
+                        <label><input type="radio" name="search-option" value="tenNhanVien"> Tên Nhân Viên</label>
+                    </div>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Mã Nhân Viên</th>
+                            <th>Tên Nhân Viên</th>
+                            <th>Số Điện Thoại</th>
+                            <th>Giới Tính</th>
+                            <th>Địa Chỉ</th>
+                            <th>Mật Khẩu</th>
+                            <th>Vai Trò</th>
+                            <th class="col-chuc-nang-quanlysinhvien">Chức năng</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for quanlynhanvien in quanlynhanviens %}
+                        <tr
+                            onclick="populateForm('{{ quanlynhanvien[0] }}', '{{ quanlynhanvien[1] }}', '{{ quanlynhanvien[2] }}', '{{ quanlynhanvien[3] }}', '{{ quanlynhanvien[4] }}', '{{ quanlynhanvien[5] }}', '{{ quanlynhanvien[6] }}', '{{ quanlynhanvien[7] }}', '{{ quanlynhanvien[8] }}')">
+                            <td>{{ quanlynhanvien[0] }}</td>
+                            <td>{{ quanlynhanvien[1] }}</td>
+                            <td>{{ quanlynhanvien[2] }}</td>
+                            <td>{{ quanlynhanvien[3] }}</td>
+                            <td>{{ quanlynhanvien[4] }}</td>
+                            <td>{{ quanlynhanvien[5] }}</td>
+                            <td>{{ quanlynhanvien[6] }}</td>
+                            <td class="col-chuc-nang-xoa-quanlynhanvien">
+                                <form
+                                    action="{{ url_for('quanlynhanvien.xoa_quanlynhanvien', maNhanVien=quanlynhanvien[0]) }}"
+                                    method="POST" style="display:inline;">
+                                    <button type="submit" class="btn-delete-quanlynhanvien"
+                                        onclick="return confirm('Bạn có chắc chắn muốn xóa nhan vien này?');">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function populateForm(maNhanVien, tenNhanVien, soDienThoai, gioiTinh, diaChi, matKhau, vaiTro) {
+        document.getElementById('maNhanVien').value = maNhanVien;
+        document.getElementById('tenNhanVien').value = tenNhanVien;
+        document.getElementById('soDienThoai').value = soDienThoai;
+        document.getElementById('gioiTinh').value = gioiTinh;
+        document.getElementById('diaChi').value = diaChi;
+        document.getElementById('matKhau').value = matKhau;
+        document.getElementById('vaiTro').value = vaiTro;
+    }
+    function searchFunction() {
+        var input = document.querySelector('.search-input-quanlynhanvien');
+        var filter = input.value.toLowerCase();
+        var searchType = document.querySelector('input[name="search-option"]:checked').value;
+        var table = document.querySelector(".data-table tbody");
+        var rows = table.getElementsByTagName("tr");
+
+        const columnIndexes = {
+            'maNhanVien': 0,   
+            'tenNhanVien': 1    
+        };
+
+        var columnIndex = columnIndexes[searchType];
+        for (var i = 0; i < rows.length; i++) {
+            var cell = rows[i].getElementsByTagName("td")[columnIndex];
+            if (cell) {
+                var text = cell.textContent || cell.innerText;
+                if (text.toLowerCase().indexOf(filter) > -1) {
+                    rows[i].style.display = "";
+                } else {
+                    rows[i].style.display = "none";
+                }
+            }
+        }
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+        var searchInput = document.querySelector('.search-input-quanlynhanvien');
+        if (searchInput) {
+            searchInput.addEventListener('keyup', searchFunction);
+        }
+
+        document.querySelectorAll('input[name="search-option"]').forEach(radio => {
+            radio.addEventListener('change', searchFunction);
+        });
+    });
+    const maSinhVienSelect = document.getElementById('maSinhVien');
+    const maSVInput = document.getElementById('maSV');
+    const tenSVInput = document.getElementById('tenSV');
+
+    maSinhVienSelect.addEventListener('change', function () {
+        const selectedOption = maSinhVienSelect.options[maSinhVienSelect.selectedIndex];
+        const maSV = selectedOption.value;
+        const tenSV = selectedOption.getAttribute('data-ten');
+        maSVInput.value = maSV;
+        tenSVInput.value = tenSV;
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+        const tenSachSelect = document.getElementById('tenSach');
+        const maSachInput = document.getElementById('maSach');
+        const tenSachInput = document.getElementById('tenSachInput');
+        const tenTacGiaInput = document.getElementById('tenTacGiaInput');
+        const soluongInput = document.getElementById('soluongInput');
+
+        tenSachSelect.addEventListener('change', function () {
+            const selectedOption = tenSachSelect.options[tenSachSelect.selectedIndex];
+            const maSach = selectedOption.value;
+            const tenSach = selectedOption.getAttribute('data-tensach');
+            const tenTacGia = selectedOption.getAttribute('data-tentacgia');
+            const soLuong = selectedOption.getAttribute('data-soluong');
+
+            maSachInput.value = maSach;
+            tenSachInput.value = tenSach;
+            tenTacGiaInput.value = tenTacGia;
+            soluongInput.value = soLuong;
+        });
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+        const ngayMuonInput = document.getElementById('ngayMuon');
+        const ngayTraInput = document.getElementById('ngayTra');
+
+        function formatDate(date) {
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            return `${day}/${month}/${year}`;
+        }
+
+        const today = new Date();
+        ngayMuonInput.value = formatDate(today);
+
+        const returnDate = new Date();
+        returnDate.setDate(today.getDate() + 1);
+        ngayTraInput.value = formatDate(returnDate);
+    });
+</script>
+{% endblock %}

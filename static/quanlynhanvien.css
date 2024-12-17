@@ -1,0 +1,128 @@
+.main-content-quanlynhanvien {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.header-quanlynhanvien {
+    background-color: #2AA198;
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+    font-size: 26px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.content-quanlynhanvien {
+    padding: 20px;
+}
+
+h2 {
+    color: #2AA198;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-section-quanlynhanvien {
+    background-color: #34495E;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.form-section-quanlynhanvien h3 {
+    color: #A9CCE3;
+    margin-bottom: 15px;
+}
+
+.form-group-quanlynhanvien {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 10px;
+}
+
+.button-section-quanlynhanvien {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 30px;
+}
+
+.button-section-quanlynhanvien button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: rgb(4, 143, 236);
+    border: 2px solid #fa9f01;
+    color: white;
+    cursor: pointer;
+    width: 200px;
+    font-size: 16px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.button-section-quanlynhanvien button:hover {
+    background-color: #f9f515;
+    color: rgb(0, 0, 0);
+    transform: translateY(-5px);
+}
+
+.quanlynhanvien-timkiem{
+    border: 1px solid #cecbc5;
+    padding: 10px;
+    margin-left: 10px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    color: #333;
+    margin-top: 1px;
+}
+
+.data-table th,
+.data-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+.btn-delete-quanlynhanvien {
+    background-color: #de4242;
+    color: white;
+    border: none;
+    padding: 7px 10px 7px 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-delete-quanlynhanvien:hover {
+    background-color: #a7fa01;
+}
+
+.col-chuc-nang-xoa-quanlynhanvien {
+    text-align: center;
+    vertical-align: middle;
+}
+
+input[type="text"],
+input[type="password"],
+select {
+    margin-top: 3px;
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #ecf0f1;
+    padding: 8px;
+    color: #333;
+}
